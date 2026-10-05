@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Navalha Real Barbearia: corte, barba e acabamento na navalha com hora marcada. Agende pelo WhatsApp.">
+<title>Navalha Real Barbearia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/*
+  Layout: cabeçalho fixo com CTA, hero em duas colunas (promessa + poste de barbeiro),
+  tabela de preços como cardápio de espelho, formulário que monta a mensagem do WhatsApp, prova social, local e FAQ.
+  DADOS FICTÍCIOS: nome, telefone, endereço, preços, nota e depoimentos são exemplos. Troque em "CONFIG" no fim do arquivo
+  e nos links wa.me / instagram.com.
+*/
+:root{
+  --bg:#f2f4f7;
+  --surface:#ffffff;
+  --surface-2:#e8ecf2;
+  --ink:#0e1830;
+  --muted:#4f5d77;
+  --line:#d3dae5;
+  --red:#c32f29;
+  --red-ink:#ffffff;
+  --blue:#1d4e9e;
+  --pole-white:#ffffff;
+  --wa:#118a45;
+  --wa-ink:#ffffff;
+  --focus:#1d4e9e;
+  --display:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;
+  --body:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'DM Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --gutter:clamp(16px,4vw,32px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b1222;--surface:#131d35;--surface-2:#1a2745;--ink:#edf1f8;--muted:#a3b0c8;--line:#27365a;
+    --red:#ef5b50;--red-ink:#1a0504;--blue:#7ba6ee;--pole-white:#e9eef7;--wa:#2bd46e;--wa-ink:#04210f;--focus:#9bbcf5;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b1222;--surface:#131d35;--surface-2:#1a2745;--ink:#edf1f8;--muted:#a3b0c8;--line:#27365a;
+  --red:#ef5b50;--red-ink:#1a0504;--blue:#7ba6ee;--pole-white:#e9eef7;--wa:#2bd46e;--wa-ink:#04210f;--focus:#9bbcf5;
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:.95;letter-spacing:.005em;text-transform:uppercase;text-wrap:balance;margin:0}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:4px}
+.wrap{width:min(1120px,100%);margin-inline:auto;padding-inline:var(--gutter)}
+section{padding-block:clamp(56px,9vw,104px)}
+.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);font-weight:500}
+.sec-head{display:grid;gap:12px;margin-bottom:clamp(28px,5vw,48px);max-width:640px}
+.sec-head h2{font-size:clamp(2.4rem,6.5vw,4rem)}
+.sec-head p{color:var(--muted);max-width:56ch}
+
+/* poste de barbeiro */
+.stripes{background:repeating-linear-gradient(-45deg,var(--red) 0 14px,var(--pole-white) 14px 28px,var(--blue) 28px 42px,var(--pole-white) 42px 56px);background-size:80px 80px}
+.stripe-band{height:10px}
+
+/* botões */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px;border-radius:6px;font-weight:700;font-size:1rem;text-decoration:none;border:2px solid transparent;cursor:pointer;font-family:var(--body);transition:transform .15s ease,box-shadow .15s ease,background .15s ease}
+.btn svg{width:22px;height:22px;flex:none}
+.btn:hover{transform:translateY(-2px)}
+.btn-wa{background:var(--wa);color:var(--wa-ink);box-shadow:0 6px 0 rgba(0,0,0,.18)}
+.btn-ig{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn-ig:hover{background:var(--ink);color:var(--bg)}
+.btn-sm{min-height:42px;padding:0 16px;font-size:.92rem;box-shadow:none}
+.btn-block{width:100%}
+
+/* cabeçalho */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
+.brand-mark{width:14px;height:34px;border-radius:7px;flex:none;border:2px solid var(--ink)}
+.brand-name{font-family:var(--display);font-weight:900;font-size:1.45rem;line-height:1;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap}
+.brand-name small{display:block;font-family:var(--mono);font-size:.62rem;font-weight:500;letter-spacing:.2em;color:var(--muted)}
+.nav{display:flex;align-items:center;gap:26px}
+.nav a.link{text-decoration:none;font-weight:500;font-size:.95rem;color:var(--muted)}
+.nav a.link:hover{color:var(--ink)}
+.top-cta{display:flex;gap:10px;align-items:center}
+.ig-icon-btn{display:none;width:42px;height:42px;border:2px solid var(--ink);border-radius:6px;align-items:center;justify-content:center}
+.ig-icon-btn svg{width:20px;height:20px}
+
+/* hero */
+.hero{padding-block:clamp(36px,7vw,84px) clamp(48px,8vw,96px)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(28px,5vw,64px);align-items:center}
+.status{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.8rem;letter-spacing:.06em;padding:8px 14px;border:1px solid var(--line);background:var(--surface);border-radius:999px;margin-bottom:22px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--muted);flex:none}
+.status[data-open="true"] .dot{background:var(--wa)}
+.status[data-open="false"] .dot{background:var(--red)}
+.hero h1{font-size:clamp(3.4rem,10.5vw,7rem);margin-bottom:22px}
+.hero h1 em{font-style:normal;color:var(--red)}
+.hero .lead{font-size:clamp(1.05rem,2.4vw,1.25rem);color:var(--muted);max-width:46ch;margin-bottom:30px}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px}
+.proof{display:flex;flex-wrap:wrap;gap:12px 30px;margin-top:34px;padding-top:24px;border-top:1px solid var(--line)}
+.proof div{display:grid;gap:2px;min-width:0}
+.proof strong{font-family:var(--display);font-size:2rem;line-height:1;font-weight:800}
+.proof span{font-size:.82rem;color:var(--muted)}
+
+.hero-art{display:grid;place-items:center;justify-self:center;width:100%}
+.pole{width:96px;height:min(440px,56vw);border-radius:48px;border:3px solid var(--ink);position:relative;overflow:hidden;background-color:var(--pole-white)}
+.pole::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(-58deg,var(--red) 0 22px,var(--pole-white) 22px 44px,var(--blue) 44px 66px,var(--pole-white) 66px 88px);background-size:100% 124px;animation:spin 3.2s linear infinite}
+@keyframes spin{from{background-position:0 0}to{background-position:0 124px}}
+
+/* serviços */
+.services{background:var(--surface);border-block:1px solid var(--line)}
+.menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(28px,5vw,64px)}
+.item{display:grid;gap:4px;padding:20px 0;border-bottom:1px solid var(--line)}
+.item-row{display:flex;align-items:baseline;gap:10px}
+.item-row h3{font-size:1.55rem;white-space:normal}
+.leader{flex:1;border-bottom:2px dotted var(--muted);min-width:16px;transform:translateY(-4px);opacity:.6}
+.price{font-family:var(--display);font-weight:800;font-size:1.7rem;white-space:nowrap}
+.item p{color:var(--muted);font-size:.93rem}
+.item .meta{font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.item.hot .tag{display:inline-block;background:var(--red);color:var(--red-ink);font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:3px;margin-left:8px;vertical-align:middle;white-space:nowrap}
+.menu-foot{margin-top:30px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+.menu-foot p{color:var(--muted);font-size:.93rem}
+
+/* diferenciais */
+.why-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,36px)}
+.why-grid article{display:grid;gap:10px;align-content:start;padding-top:18px;border-top:4px solid var(--ink)}
+.why-grid h3{font-size:1.8rem}
+.why-grid p{color:var(--muted)}
+
+/* equipe */
+.team{background:var(--surface-2)}
+.team-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.barber{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:24px;display:grid;gap:14px;align-content:start}
+.mono-av{width:72px;height:72px;border-radius:50%;border:3px solid var(--ink);display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:1.9rem;background:var(--pole-white);color:#0e1830}
+.barber h3{font-size:1.7rem}
+.barber .role{font-family:var(--mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+.barber p{color:var(--muted);font-size:.95rem}
+
+/* agendar */
+.book-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(28px,5vw,64px);align-items:start}
+.book-copy h2{font-size:clamp(2.6rem,7vw,4.6rem);margin-bottom:18px}
+.book-copy p{color:var(--muted);max-width:44ch;margin-bottom:22px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.steps li{display:flex;gap:12px;align-items:flex-start}
+.steps li span{font-family:var(--mono);font-size:.78rem;border:1.5px solid var(--ink);border-radius:50%;width:26px;height:26px;display:grid;place-items:center;flex:none;margin-top:1px}
+form.book{background:var(--surface);border:2px solid var(--ink);border-radius:8px;padding:clamp(20px,4vw,32px);display:grid;gap:16px;box-shadow:8px 8px 0 var(--ink)}
+.field{display:grid;gap:6px;min-width:0}
+.field label{font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.field select,.field input{width:100%;min-height:50px;padding:0 14px;border:1.5px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1rem}
+.field select:focus,.field input:focus{border-color:var(--ink)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.sum{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-top:6px;border-top:1px dashed var(--muted)}
+.sum span{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sum strong{font-family:var(--display);font-size:2.2rem;font-weight:800;line-height:1}
+.fine{font-size:.82rem;color:var(--muted);text-align:center}
+
+/* depoimentos */
+.reviews{background:var(--ink);color:var(--bg)}
+.reviews .eyebrow{color:var(--bg);opacity:.8}
+.reviews .sec-head p{color:var(--bg);opacity:.75}
+.rev-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.rev{border:1.5px solid color-mix(in srgb,var(--bg) 35%,transparent);border-radius:6px;padding:24px;display:grid;gap:16px;align-content:space-between}
+.rev q{quotes:none;font-size:1.05rem;line-height:1.5}
+.rev footer{display:flex;justify-content:space-between;gap:10px;font-size:.88rem;opacity:.85}
+.stars{letter-spacing:.14em;font-size:.95rem}
+.rating-line{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;margin-top:-12px;margin-bottom:28px;font-family:var(--mono);font-size:.85rem;opacity:.85}
+
+/* local */
+.loc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,5vw,64px)}
+.info{display:grid;gap:22px;align-content:start}
+.info h3{font-size:1.5rem;margin-bottom:6px}
+.hours{display:grid;gap:6px;font-family:var(--mono);font-size:.9rem}
+.hours div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dotted var(--muted);padding-bottom:6px}
+.hours .today{font-weight:500;color:var(--red)}
+.phone{font-family:var(--mono);font-size:1.05rem;user-select:all}
+.map-card{border:2px solid var(--ink);border-radius:8px;background:var(--surface);padding:24px;display:grid;gap:16px;align-content:start;min-width:0}
+.map-card svg{width:100%;height:auto;max-height:240px;border-radius:4px;background:var(--surface-2)}
+.map-card address{font-style:normal}
+
+/* faq */
+.faq{background:var(--surface);border-top:1px solid var(--line)}
+.faq-list{display:grid;max-width:780px}
+details{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;align-items:center;padding:20px 0;font-weight:600;font-size:1.08rem}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--mono);font-size:1.5rem;line-height:1;flex:none;transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--muted);padding:0 40px 22px 0;max-width:62ch}
+
+/* CTA final */
+.final{padding-block:0}
+.final .box{padding-block:clamp(56px,9vw,96px);display:grid;gap:22px;justify-items:start}
+.final h2{font-size:clamp(3rem,9vw,6rem);max-width:12ch}
+.final p{color:var(--muted);max-width:46ch}
+
+footer.foot{border-top:1px solid var(--line);padding-block:28px;font-size:.88rem;color:var(--muted)}
+footer.foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px}
+
+/* barra fixa mobile */
+.dock{display:none}
+
+@media (max-width:900px){
+  .nav a.link{display:none}
+  .hero-grid,.book-grid,.loc-grid{grid-template-columns:minmax(0,1fr)}
+  .hero-art{display:none}
+  .why-grid,.team-grid,.rev-grid{grid-template-columns:minmax(0,1fr)}
+  .menu{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:640px){
+  body{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+  .top-cta .btn{display:none}
+  .ig-icon-btn{display:flex}
+  .brand-name{font-size:1.25rem}
+  .cta-row .btn{width:100%}
+  .two{grid-template-columns:minmax(0,1fr)}
+  .dock{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:30;padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom,0px));background:var(--bg);border-top:1px solid var(--line)}
+  .dock .btn{min-height:50px}
+  .dock .btn-ig{padding:0 16px}
+}
+@media (prefers-reduced-motion:reduce){
+  .pole::before{animation:none}
+  html{scroll-behavior:auto}
+  .btn{transition:none}
+}
+</style>
+
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.3" fill="currentColor"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#topo" aria-label="Navalha Real Barbearia, início">
+      <span class="brand-mark stripes" aria-hidden="true"></span>
+      <span class="brand-name">Navalha Real<small>Barbearia desde 2014</small></span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      <a class="link" href="#servicos">Serviços</a>
+      <a class="link" href="#equipe">Barbeiros</a>
+      <a class="link" href="#local">Onde estamos</a>
+      <a class="link" href="#faq">Dúvidas</a>
+      <div class="top-cta">
+        <a class="ig-icon-btn" href="https://instagram.com/navalharealbarbearia" target="_blank" rel="noopener" aria-label="Instagram da Navalha Real"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
+        <a class="btn btn-wa btn-sm js-wa" href="#" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg>Agendar</a>
+      </div>
+    </nav>
+  </div>
+</header>
+<div class="stripe-band stripes" aria-hidden="true"></div>
+
+<main id="topo">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="status" id="status" data-open="">
+          <span class="dot" aria-hidden="true"></span><span id="status-text">Seg a Sáb · 9h às 20h</span>
+        </div>
+        <h1>O corte certo. <em>Na hora marcada.</em></h1>
+        <p class="lead">Degradê, barba na toalha quente e acabamento na navalha. Sem fila e sem esperar: você escolhe o barbeiro e o horário em um minuto pelo WhatsApp.</p>
+        <div class="cta-row">
+          <a class="btn btn-wa js-wa" href="#" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg>Agendar pelo WhatsApp</a>
+          <a class="btn btn-ig" href="https://instagram.com/navalharealbarbearia" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg>Ver trabalhos no Instagram</a>
+        </div>
+        <div class="proof">
+          <div><strong>4,9 ★</strong><span>nota no Google (612 avaliações)</span></div>
+          <div><strong>12 anos</strong><span>de casa na região</span></div>
+          <div><strong>0 fila</strong><span>só atendimento com hora</span></div>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <div class="pole"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services" id="servicos">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Tabela de preços</span>
+        <h2>Serviços e valores</h2>
+        <p>Preço fechado, sem surpresa no caixa. Pix, débito e crédito em todos os serviços.</p>
+      </div>
+      <div class="menu">
+        <div class="item hot">
+          <div class="item-row"><h3>Corte + Barba<span class="tag">Mais pedido</span></h3><span class="leader"></span><span class="price">R$ 75</span></div>
+          <p>Corte na tesoura ou máquina, barba com toalha quente e finalização com pomada.</p>
+          <span class="meta">1h10 · economiza R$ 10</span>
+        </div>
+        <div class="item">
+          <div class="item-row"><h3>Corte</h3><span class="leader"></span><span class="price">R$ 45</span></div>
+          <p>Degradê, social, navalhado ou tesoura. Lavagem e finalização incluídas.</p>
+          <span class="meta">40 min</span>
+        </div>
+        <div class="item">
+          <div class="item-row"><h3>Barba</h3><span class="leader"></span><span class="price">R$ 40</span></div>
+          <p>Toalha quente, navalha, hidratação e óleo de barba.</p>
+          <span class="meta">30 min</span>
+        </div>
+        <div class="item">
+          <div class="item-row"><h3>Sobrancelha</h3><span class="leader"></span><span class="price">R$ 15</span></div>
+          <p>Alinhamento na navalha, sem exagero.</p>
+          <span class="meta">10 min</span>
+        </div>
+        <div class="item">
+          <div class="item-row"><h3>Pezinho</h3><span class="leader"></span><span class="price">R$ 15</span></div>
+          <p>Acabamento entre um corte e outro para manter o desenho.</p>
+          <span class="meta">10 min</span>
+        </div>
+        <div class="item">
+          <div class="item-row"><h3>Pigmentação</h3><span class="leader"></span><span class="price">R$ 35</span></div>
+          <p>Cobre falhas e fios brancos na barba ou no cabelo, com aspecto natural.</p>
+          <span class="meta">30 min</span>
+        </div>
+        <div class="item">
+          <div class="item-row"><h3>Corte infantil</h3><span class="leader"></span><span class="price">R$ 35</span></div>
+          <p>Até 10 anos, com paciência e sem choro.</p>
+          <span class="meta">30 min</span>
+        </div>
+        <div class="item">
+          <div class="item-row"><h3>Platinado e luzes</h3><span class="leader"></span><span class="price">R$ 120+</span></div>
+          <p>Avaliação no WhatsApp com foto do cabelo. Valor final depende do comprimento.</p>
+          <span class="meta">2h a 3h</span>
+        </div>
+      </div>
+      <div class="menu-foot">
+        <p>Primeira vez aqui? Avise ao agendar e ganhe uma hidratação de barba.</p>
+        <a class="btn btn-wa btn-sm js-wa" href="#" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg>Quero agendar</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="diferenciais">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Por que a Navalha Real</span>
+        <h2>Você chega, senta e sai pronto</h2>
+      </div>
+      <div class="why-grid">
+        <article>
+          <h3>Hora marcada de verdade</h3>
+          <p>Cada cliente tem seu horário reservado. Se você chegar na hora, a cadeira está livre.</p>
+        </article>
+        <article>
+          <h3>Material esterilizado</h3>
+          <p>Lâmina nova a cada barba, ferramentas na autoclave e capa trocada a cada cliente.</p>
+        </article>
+        <article>
+          <h3>Conversa e café</h3>
+          <p>Ambiente tranquilo, cerveja gelada depois das 17h e Wi-Fi para quem precisa responder mensagens.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="team" id="equipe">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Equipe</span>
+        <h2>Quem vai cuidar de você</h2>
+        <p>Três barbeiros, cada um com uma especialidade. Escolha o seu ao agendar.</p>
+      </div>
+      <div class="team-grid">
+        <article class="barber">
+          <div class="mono-av" aria-hidden="true">RD</div>
+          <div><h3>Rafa Duarte</h3><span class="role">Degradê e navalhado</span></div>
+          <p>9 anos de cadeira. Referência em degradê baixo, médio e alto, e em desenhos na navalha.</p>
+        </article>
+        <article class="barber">
+          <div class="mono-av" aria-hidden="true">DM</div>
+          <div><h3>Diego Moura</h3><span class="role">Barba e clássicos</span></div>
+          <p>Especialista em barba com toalha quente e cortes sociais. Atendimento calmo e detalhista.</p>
+        </article>
+        <article class="barber">
+          <div class="mono-av" aria-hidden="true">TL</div>
+          <div><h3>Thiago Lins</h3><span class="role">Visagismo e química</span></div>
+          <p>Platinado, luzes e pigmentação. Indica o corte que combina com o formato do seu rosto.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="agendar">
+    <div class="wrap book-grid">
+      <div class="book-copy">
+        <span class="eyebrow">Agendamento</span>
+        <h2>Monte seu horário em 30 segundos</h2>
+        <p>Escolha o serviço, o barbeiro e o período. A gente abre o WhatsApp com a mensagem pronta e confirma o horário na hora.</p>
+        <ol class="steps">
+          <li><span>1</span><div>Escolha o que você quer fazer.</div></li>
+          <li><span>2</span><div>Toque em enviar no WhatsApp.</div></li>
+          <li><span>3</span><div>Receba a confirmação do horário.</div></li>
+        </ol>
+      </div>
+
+      <form class="book" id="book" novalidate>
+        <div class="field">
+          <label for="svc">Serviço</label>
+          <select id="svc">
+            <option value="Corte + Barba" data-price="75" selected>Corte + Barba · R$ 75</option>
+            <option value="Corte" data-price="45">Corte · R$ 45</option>
+            <option value="Barba" data-price="40">Barba · R$ 40</option>
+            <option value="Corte infantil" data-price="35">Corte infantil · R$ 35</option>
+            <option value="Pigmentação" data-price="35">Pigmentação · R$ 35</option>
+            <option value="Sobrancelha" data-price="15">Sobrancelha · R$ 15</option>
+            <option value="Platinado ou luzes" data-price="120">Platinado ou luzes · a partir de R$ 120</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="barber">Barbeiro</label>
+          <select id="barber">
+            <option value="qualquer barbeiro disponível">Tanto faz, o primeiro livre</option>
+            <option value="o Rafa">Rafa Duarte</option>
+            <option value="o Diego">Diego Moura</option>
+            <option value="o Thiago">Thiago Lins</option>
+          </select>
+        </div>
+        <div class="two">
+          <div class="field">
+            <label for="day">Dia</label>
+            <select id="day">
+              <option value="hoje">Hoje</option>
+              <option value="amanhã" selected>Amanhã</option>
+              <option value="no sábado">Sábado</option>
+              <option value="essa semana">Outro dia da semana</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="period">Período</label>
+            <select id="period">
+              <option value="de manhã">Manhã</option>
+              <option value="à tarde" selected>Tarde</option>
+              <option value="no fim do dia">Fim do dia</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="nome">Seu nome</label>
+          <input id="nome" type="text" autocomplete="given-name" placeholder="Como podemos te chamar?">
+        </div>
+        <div class="sum"><span>Valor estimado</span><strong id="total">R$ 75</strong></div>
+        <a class="btn btn-wa btn-block" id="send" href="#" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg>Enviar pelo WhatsApp</a>
+        <p class="fine">Você confirma o horário direto com a recepção. Sem cadastro e sem pagar nada agora.</p>
+      </form>
+    </div>
+  </section>
+
+  <section class="reviews" id="depoimentos">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Clientes</span>
+        <h2>Quem vem, volta</h2>
+      </div>
+      <div class="rating-line"><span class="stars" aria-hidden="true">★★★★★</span><span>4,9 de 5 · 612 avaliações no Google</span></div>
+      <div class="rev-grid">
+        <div class="rev">
+          <q>Marquei pelo WhatsApp numa terça e fui atendido às 18h em ponto. O degradê durou três semanas bonito.</q>
+          <footer><span>Lucas M.</span><span class="stars" aria-label="5 estrelas">★★★★★</span></footer>
+        </div>
+        <div class="rev">
+          <q>A barba com toalha quente é outra coisa. O Diego explicou como cuidar em casa e não empurrou produto.</q>
+          <footer><span>André P.</span><span class="stars" aria-label="5 estrelas">★★★★★</span></footer>
+        </div>
+        <div class="rev">
+          <q>Levei meu filho de 6 anos e ele pediu para voltar. Paciência e capricho com criança é raro.</q>
+          <footer><span>Carla S.</span><span class="stars" aria-label="5 estrelas">★★★★★</span></footer>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="local">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Onde estamos</span>
+        <h2>Fácil de chegar</h2>
+      </div>
+      <div class="loc-grid">
+        <div class="info">
+          <div>
+            <h3>Horários</h3>
+            <div class="hours" id="hours">
+              <div data-d="1,2,3,4,5"><span>Segunda a sexta</span><span>9h às 20h</span></div>
+              <div data-d="6"><span>Sábado</span><span>9h às 18h</span></div>
+              <div data-d="0"><span>Domingo</span><span>Fechado</span></div>
+            </div>
+          </div>
+          <div>
+            <h3>WhatsApp</h3>
+            <p class="phone">(11) 99999-0000</p>
+          </div>
+          <div class="cta-row">
+            <a class="btn btn-wa js-wa" href="#" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg>Chamar no WhatsApp</a>
+            <a class="btn btn-ig" href="https://instagram.com/navalharealbarbearia" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg>@navalharealbarbearia</a>
+          </div>
+        </div>
+        <div class="map-card">
+          <svg viewBox="0 0 400 220" role="img" aria-label="Esquema do quarteirão com a barbearia na esquina da Rua das Acácias com a Av. Central">
+            <rect width="400" height="220" fill="none"/>
+            <g fill="none" stroke="var(--muted)" stroke-width="14" opacity=".35"><path d="M0 120H400"/><path d="M230 0V220"/></g>
+            <g fill="none" stroke="var(--muted)" stroke-width="6" opacity=".25"><path d="M0 40H400"/><path d="M90 0V220"/><path d="M0 190H400"/><path d="M340 0V220"/></g>
+            <rect x="238" y="64" width="44" height="46" rx="3" fill="var(--red)"/>
+            <circle cx="260" cy="84" r="8" fill="var(--pole-white)"/>
+            <text x="14" y="112" font-family="DM Mono, monospace" font-size="11" fill="var(--ink)">Av. Central</text>
+            <text x="238" y="18" font-family="DM Mono, monospace" font-size="11" fill="var(--ink)">R. das Acácias</text>
+            <text x="290" y="82" font-family="DM Mono, monospace" font-size="12" font-weight="500" fill="var(--ink)">Navalha Real</text>
+          </svg>
+          <address>
+            <strong>Rua das Acácias, 128, Centro</strong><br>
+            Esquina com a Av. Central, ao lado da padaria Pão Dourado.<br>
+            Estacionamento conveniado a 50 m e bicicletário na porta.
+          </address>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Dúvidas</span>
+        <h2>Antes de agendar</h2>
+      </div>
+      <div class="faq-list">
+        <details open>
+          <summary>Preciso agendar ou posso chegar direto?</summary>
+          <p>Atendemos só com hora marcada para ninguém esperar. Se houver um encaixe livre, avisamos pelo WhatsApp na hora.</p>
+        </details>
+        <details>
+          <summary>Quais formas de pagamento vocês aceitam?</summary>
+          <p>Pix, débito, crédito em até 3x sem juros e dinheiro.</p>
+        </details>
+        <details>
+          <summary>Posso remarcar ou cancelar?</summary>
+          <p>Pode, sem custo, até 2 horas antes do horário. É só mandar uma mensagem no mesmo WhatsApp do agendamento.</p>
+        </details>
+        <details>
+          <summary>Qual o tempo de cada atendimento?</summary>
+          <p>Corte leva cerca de 40 minutos, barba 30 e o combo 1h10. O tempo de cada serviço aparece na tabela de preços.</p>
+        </details>
+        <details>
+          <summary>Vocês atendem crianças?</summary>
+          <p>Sim, a partir de 2 anos. O corte infantil vale até 10 anos e pode ser feito no colo do responsável.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="stripe-band stripes" aria-hidden="true"></div>
+    <div class="wrap box">
+      <h2>Sua cadeira está esperando</h2>
+      <p>Mande uma mensagem agora e garanta o melhor horário da semana.</p>
+      <div class="cta-row">
+        <a class="btn btn-wa js-wa" href="#" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg>Agendar pelo WhatsApp</a>
+        <a class="btn btn-ig" href="https://instagram.com/navalharealbarbearia" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg>Seguir no Instagram</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 Navalha Real Barbearia · CNPJ 00.000.000/0001-00</span>
+    <span>Rua das Acácias, 128, Centro</span>
+  </div>
+</footer>
+
+<div class="dock">
+  <a class="btn btn-wa js-wa" href="#" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg>Agendar pelo WhatsApp</a>
+  <a class="btn btn-ig" href="https://instagram.com/navalharealbarbearia" target="_blank" rel="noopener" aria-label="Abrir Instagram"><svg aria-hidden="true"><use href="#i-ig"/></svg></a>
+</div>
+
+<script>
+(function(){
+  /* CONFIG: dados fictícios. Troque pelos reais. */
+  var WA_NUMBER = "5511999990000";          // DDI + DDD + número, só dígitos
+  var WA_DEFAULT = "Olá! Vim pelo site e quero agendar um horário.";
+  var HOURS = {0:null,1:[9,20],2:[9,20],3:[9,20],4:[9,20],5:[9,20],6:[9,18]};
+
+  function wa(text){ return "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(text); }
+
+  // links genéricos de WhatsApp
+  var links = document.querySelectorAll(".js-wa");
+  for (var i = 0; i < links.length; i++) links[i].href = wa(WA_DEFAULT);
+
+  // montador de mensagem
+  var svc = document.getElementById("svc"), barber = document.getElementById("barber"),
+      day = document.getElementById("day"), period = document.getElementById("period"),
+      nome = document.getElementById("nome"), total = document.getElementById("total"),
+      send = document.getElementById("send"), form = document.getElementById("book");
+
+  function update(){
+    var opt = svc.options[svc.selectedIndex];
+    var price = opt.getAttribute("data-price");
+    total.textContent = (opt.value === "Platinado ou luzes" ? "a partir de " : "") + "R$ " + price;
+    var who = nome.value.trim();
+    var msg = "Olá! Quero agendar " + opt.value + " com " + barber.value + " " + day.value + ", " + period.value + "." +
+              (who ? " Meu nome é " + who + "." : "") + " Tem horário?";
+    send.href = wa(msg);
+  }
+  [svc, barber, day, period].forEach(function(el){ el.addEventListener("change", update); });
+  nome.addEventListener("input", update);
+  form.addEventListener("submit", function(e){ e.preventDefault(); });
+  update();
+
+  // status aberto/fechado e dia atual na tabela de horários
+  var now = new Date(), d = now.getDay(), h = now.getHours() + now.getMinutes()/60;
+  var status = document.getElementById("status"), text = document.getElementById("status-text");
+  var today = HOURS[d];
+  if (today && h >= today[0] && h < today[1]) {
+    status.setAttribute("data-open","true");
+    text.textContent = "Aberto agora · fecha às " + today[1] + "h";
+  } else {
+    status.setAttribute("data-open","false");
+    var names = ["domingo","segunda","terça","quarta","quinta","sexta","sábado"];
+    if (today && h < today[0]) text.textContent = "Fechado agora · abre hoje às " + today[0] + "h";
+    else {
+      var nd2 = (d + 1) % 7, add = 1;
+      while (!HOURS[nd2]) { nd2 = (nd2 + 1) % 7; add++; }
+      text.textContent = "Fechado agora · abre " + (add === 1 ? "amanhã" : names[nd2]) + " às " + HOURS[nd2][0] + "h";
+    }
+  }
+  var rows = document.querySelectorAll("#hours [data-d]");
+  for (var r = 0; r < rows.length; r++) {
+    if (rows[r].getAttribute("data-d").split(",").indexOf(String(d)) > -1) rows[r].classList.add("today");
+  }
+})();
+</script>
+</body>
+</html>
